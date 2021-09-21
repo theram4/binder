@@ -320,7 +320,7 @@
               },
               "SubmarketSaleVolumePriceChart": {
                 "NarrativeTitle": "UTC Investment Trends",
-                "NarrativeText": "<p>.﻿</p>",
+                "NarrativeText": "<p></p>",
                 "Chart": {
                   "Image": null,
                   "Title": "SALES VOLUME & MARKET SALE PRICE PER SF",

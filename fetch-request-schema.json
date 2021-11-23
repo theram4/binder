@@ -1,0 +1,723 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$ref": "#/definitions/DataFetchRequestSchema",
+    "definitions": {
+        "DataFetchRequestSchema": {
+            "$ref": "#/definitions/DataFetchRequest%3CReportFields%3E"
+        },
+        "DataFetchRequest<ReportFields>": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "spanContext": {
+                    "type": "string",
+                    "description": "spanContext is for use with openTracing. Please use openTelemetryContext."
+                },
+                "openTelemetryContext": {
+                    "type": "string"
+                },
+                "job": {
+                    "$ref": "#/definitions/JobDetails"
+                },
+                "report": {
+                    "$ref": "#/definitions/ReportRequestDetails%3CReportFields%3E"
+                }
+            },
+            "required": ["job", "openTelemetryContext", "report"],
+            "description": "This is the structure posted to a single report."
+        },
+        "JobDetails": {
+            "type": "object",
+            "properties": {
+                "jobId": {
+                    "type": "string"
+                },
+                "dateCreated": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                },
+                "contactId": {
+                    "type": "string"
+                },
+                "authToken": {
+                    "type": "string"
+                },
+                "userToken": {
+                    "type": "string",
+                    "description": "Original user CA token"
+                },
+                "userPreferences": {
+                    "$ref": "#/definitions/UserPreferences"
+                },
+                "globalOptions": {
+                    "$ref": "#/definitions/GlobalOptions"
+                },
+                "cookies": {
+                    "$ref": "#/definitions/Cookies"
+                },
+                "appData": {
+                    "type": "object"
+                },
+                "searchDescription": {
+                    "$ref": "#/definitions/SearchDescription"
+                },
+                "pds": {
+                    "$ref": "#/definitions/PdsInfo"
+                },
+                "reportsOrder": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ReportOrder"
+                    }
+                }
+            },
+            "required": ["jobId", "dateCreated", "userId", "contactId", "authToken", "userToken", "userPreferences", "globalOptions", "cookies", "pds"],
+            "additionalProperties": false
+        },
+        "UserPreferences": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "reletSpaceName": {
+                    "$ref": "#/definitions/SpaceTypeName"
+                },
+                "distanceUnit": {
+                    "$ref": "#/definitions/DistanceUnit"
+                },
+                "secondaryAreaUnit": {
+                    "$ref": "#/definitions/AreaUnit"
+                },
+                "rateBasis": {
+                    "$ref": "#/definitions/RateBasis"
+                },
+                "locale": {
+                    "$ref": "#/definitions/Locale"
+                },
+                "currencyCode": {
+                    "$ref": "#/definitions/Currency"
+                },
+                "areaUnit": {
+                    "$ref": "#/definitions/AreaUnit"
+                },
+                "buildingAreaUnit": {
+                    "$ref": "#/definitions/BuildingAreaUnit"
+                },
+                "phoneDialingCountry": {
+                    "type": "string"
+                },
+                "lengthUnit": {
+                    "$ref": "#/definitions/LengthUnit"
+                }
+            },
+            "required": ["areaUnit", "buildingAreaUnit", "currencyCode", "lengthUnit", "locale", "phoneDialingCountry"],
+            "description": "This type should be consumed by report writers. While this may align with costar suite\n\"Preferences\", this needs to be stable within our own app so the API remains stable. This\nshould be mapped from the Suite type by consumers."
+        },
+        "SpaceTypeName": {
+            "type": "string",
+            "enum": ["Relet", "Direct"]
+        },
+        "DistanceUnit": {
+            "type": "string",
+            "enum": ["MI", "KM"]
+        },
+        "AreaUnit": {
+            "type": "string",
+            "enum": ["AC", "SF", "SM", "HA"]
+        },
+        "RateBasis": {
+            "type": "string",
+            "enum": ["month", "year"]
+        },
+        "Locale": {
+            "type": "string",
+            "enum": ["en-CA", "en-GB", "en-US", "fr-CA", "fr-FR", "es-ES", "de-DE", "nl-NL", "it-IT", "pt-PT", "en-ZW", "en-ZA", "fr-MC", "es-UY", "de-LI"]
+        },
+        "Currency": {
+            "type": "string",
+            "enum": ["USD", "CAD", "GBP", "EUR", "JPY"]
+        },
+        "BuildingAreaUnit": {
+            "type": "string",
+            "enum": ["SF", "SM"]
+        },
+        "LengthUnit": {
+            "type": "string",
+            "enum": ["FT", "METER"]
+        },
+        "GlobalOptions": {
+            "type": "object",
+            "properties": {
+                "legalDisclaimer": {
+                    "type": "string"
+                },
+                "startingPageNumber": {
+                    "type": "number"
+                },
+                "date": {
+                    "type": "string"
+                },
+                "collate": {
+                    "type": "boolean"
+                },
+                "propertiesToInclude": {
+                    "type": "string"
+                },
+                "surveyPage": {
+                    "type": "boolean"
+                },
+                "coverPage": {
+                    "type": "boolean"
+                },
+                "pageNumber": {
+                    "type": "boolean"
+                }
+            },
+            "additionalProperties": false
+        },
+        "Cookies": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "string"
+            }
+        },
+        "SearchDescription": {
+            "type": "object",
+            "properties": {
+                "jobName": {
+                    "type": "string"
+                },
+                "surveyName": {
+                    "type": "string"
+                },
+                "resultsCount": {
+                    "type": "string"
+                },
+                "primaryCount": {
+                    "type": "number"
+                },
+                "secondaryCount": {
+                    "type": "number"
+                }
+            },
+            "additionalProperties": false
+        },
+        "PdsInfo": {
+            "type": "object",
+            "properties": {
+                "url": {
+                    "type": "string"
+                },
+                "authToken": {
+                    "type": "string"
+                },
+                "apiKey": {
+                    "type": "string"
+                },
+                "headers": {
+                    "$ref": "#/definitions/PdsHeaders"
+                }
+            },
+            "required": ["url", "authToken", "apiKey", "headers"],
+            "additionalProperties": false
+        },
+        "PdsHeaders": {
+            "type": "object",
+            "properties": {
+                "Authorization": {
+                    "type": "string"
+                },
+                "X-Client-IP": {
+                    "type": "string"
+                },
+                "X-PDS-API-Key": {
+                    "type": "string"
+                },
+                "Cookie": {
+                    "type": "string"
+                }
+            },
+            "required": ["Authorization", "X-Client-IP", "X-PDS-API-Key"],
+            "additionalProperties": false
+        },
+        "ReportOrder": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "order": {
+                    "type": "number"
+                },
+                "parent": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string"
+                        },
+                        "title": {
+                            "type": "string"
+                        }
+                    },
+                    "required": ["id", "title"],
+                    "additionalProperties": false
+                }
+            },
+            "required": ["id", "title", "order"],
+            "additionalProperties": false
+        },
+        "ReportRequestDetails<ReportFields>": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "index": {
+                    "type": "number"
+                },
+                "entities": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "searchCriteria": {
+                    "$ref": "#/definitions/SearchCriteria"
+                },
+                "product": {
+                    "$ref": "#/definitions/Product"
+                },
+                "options": {
+                    "$ref": "#/definitions/ReportOptions%3CReportFields%3E"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "version": {
+                    "type": "string"
+                },
+                "lifeCycleStatus": {
+                    "$ref": "#/definitions/LifeCycle"
+                },
+                "reportCoreVersion": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "metadata": {
+                    "$ref": "#/definitions/ReportConfiguration"
+                },
+                "categories": {
+                    "$ref": "#/definitions/ProductCategory"
+                },
+                "runConfig": {
+                    "$ref": "#/definitions/RunConfig"
+                },
+                "reportVisibilityCriteria": {
+                    "$ref": "#/definitions/ReportVisibilityCriteria"
+                },
+                "reportSections": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": ["categories", "entities", "index", "lifeCycleStatus", "metadata", "name", "options", "product", "reportCoreVersion", "searchCriteria", "title", "version"]
+        },
+        "SearchCriteria": {
+            "type": "object",
+            "description": "Search criteria is CoStar.Api.FusionSearch.Criteria.SearchCriteria\nBecasue Report Wrangler is not specifically concerned with the version of\nthis API, it's left untyped."
+        },
+        "Product": {
+            "type": "string",
+            "enum": ["property", "forLease", "forSale", "leaseComps", "saleComps", "tenants", "publicRecord"]
+        },
+        "ReportOptions<ReportFields>": {
+            "$ref": "#/definitions/ValuePropOf%3CReportFields%3E"
+        },
+        "ValuePropOf<ReportFields>": {
+            "type": "object",
+            "additionalProperties": {
+                "anyOf": [{
+                        "type": "number"
+                    }, {
+                        "not": {}
+                    }, {
+                        "type": "boolean"
+                    }, {
+                        "type": "string"
+                    }, {
+                        "$ref": "#/definitions/SortableValue%3Cstring%3E"
+                    }, {}
+                ]
+            }
+        },
+        "SortableValue<string>": {
+            "type": "object",
+            "properties": {
+                "sortCriteria": {
+                    "type": "string"
+                },
+                "sortOrder": {
+                    "type": "string"
+                }
+            },
+            "required": ["sortCriteria", "sortOrder"],
+            "additionalProperties": false
+        },
+        "LifeCycle": {
+            "type": "string",
+            "enum": ["development", "deleted", "deprecated", "beta", "ga"]
+        },
+        "ReportConfiguration": {
+            "type": "object",
+            "properties": {
+                "footerOptions": {
+                    "anyOf": [{
+                            "type": "object",
+                            "properties": {
+                                "addFooter": {
+                                    "type": "boolean",
+                                    "enum": [true]
+                                },
+                                "footerContainsPageNumber": {
+                                    "type": "boolean"
+                                },
+                                "footerHeightPoints": {
+                                    "type": "number"
+                                },
+                                "includeDivider": {
+                                    "type": "boolean"
+                                },
+                                "landscape": {
+                                    "type": "object",
+                                    "properties": {
+                                        "x": {
+                                            "type": "number"
+                                        },
+                                        "y": {
+                                            "type": "number"
+                                        }
+                                    },
+                                    "required": ["x", "y"],
+                                    "additionalProperties": false
+                                },
+                                "portrait": {
+                                    "type": "object",
+                                    "properties": {
+                                        "x": {
+                                            "type": "number"
+                                        },
+                                        "y": {
+                                            "type": "number"
+                                        }
+                                    },
+                                    "required": ["x", "y"],
+                                    "additionalProperties": false
+                                }
+                            },
+                            "required": ["addFooter", "footerContainsPageNumber", "landscape", "portrait"],
+                            "additionalProperties": false
+                        }, {
+                            "type": "object",
+                            "properties": {
+                                "addFooter": {
+                                    "type": "boolean",
+                                    "enum": [false]
+                                }
+                            },
+                            "required": ["addFooter"],
+                            "additionalProperties": false
+                        }
+                    ]
+                }
+            },
+            "required": ["footerOptions"],
+            "additionalProperties": false
+        },
+        "ProductCategory": {
+            "type": "object",
+            "properties": {
+                "property": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/CategoryWithOrder%3Calias-1860659754-1094-1167-1860659754-0-3221%3E"
+                    }
+                },
+                "forLease": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/CategoryWithOrder%3Calias-1860659754-1376-1449-1860659754-0-3221%3E"
+                    }
+                },
+                "forSale": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/CategoryWithOrder%3Calias-1860659754-1534-1605-1860659754-0-3221%3E"
+                    }
+                },
+                "saleComps": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/CategoryWithOrder%3Calias-1860659754-1692-1767-1860659754-0-3221%3E"
+                    }
+                },
+                "leaseComps": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/CategoryWithOrder%3Calias-1860659754-1864-1941-1860659754-0-3221%3E"
+                    }
+                },
+                "tenants": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/CategoryWithOrder%3Calias-1860659754-625-694-1860659754-0-3221%3E"
+                    }
+                },
+                "publicRecord": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/CategoryWithOrder%3Calias-1860659754-426-507-1860659754-0-3221%3E"
+                    }
+                }
+            },
+            "additionalProperties": false
+        },
+        "CategoryWithOrder<alias-1860659754-1094-1167-1860659754-0-3221>": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string",
+                    "enum": ["newReport", "brochure", "list", "analytic", "change", "market", "marketShare", "retail", "demographic", "underwriting", "custom"]
+                },
+                "order": {
+                    "type": "number"
+                }
+            },
+            "required": ["category", "order"],
+            "additionalProperties": false
+        },
+        "CategoryWithOrder<alias-1860659754-1376-1449-1860659754-0-3221>": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string",
+                    "enum": ["newReport", "brochure", "list", "analytic", "change", "market", "marketShare", "retail", "demographic", "underwriting", "custom"]
+                },
+                "order": {
+                    "type": "number"
+                }
+            },
+            "required": ["category", "order"],
+            "additionalProperties": false
+        },
+        "CategoryWithOrder<alias-1860659754-1534-1605-1860659754-0-3221>": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string",
+                    "enum": ["newReport", "brochure", "list"]
+                },
+                "order": {
+                    "type": "number"
+                }
+            },
+            "required": ["category", "order"],
+            "additionalProperties": false
+        },
+        "CategoryWithOrder<alias-1860659754-1692-1767-1860659754-0-3221>": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string",
+                    "enum": ["newReport", "brochure", "list"]
+                },
+                "order": {
+                    "type": "number"
+                }
+            },
+            "required": ["category", "order"],
+            "additionalProperties": false
+        },
+        "CategoryWithOrder<alias-1860659754-1864-1941-1860659754-0-3221>": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string",
+                    "enum": ["multiPage", "leaseDetails", "summaries"]
+                },
+                "order": {
+                    "type": "number"
+                }
+            },
+            "required": ["category", "order"],
+            "additionalProperties": false
+        },
+        "CategoryWithOrder<alias-1860659754-625-694-1860659754-0-3221>": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string",
+                    "enum": ["analytic", "building", "company", "contact", "list"]
+                },
+                "order": {
+                    "type": "number"
+                }
+            },
+            "required": ["category", "order"],
+            "additionalProperties": false
+        },
+        "CategoryWithOrder<alias-1860659754-426-507-1860659754-0-3221>": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string",
+                    "enum": ["newReport", "brochure", "list"]
+                },
+                "order": {
+                    "type": "number"
+                }
+            },
+            "required": ["category", "order"],
+            "additionalProperties": false
+        },
+        "RunConfig": {
+            "type": "object",
+            "properties": {
+                "bindingBatchSize": {
+                    "type": "number"
+                },
+                "maxEntities": {
+                    "type": "number"
+                }
+            },
+            "additionalProperties": false
+        },
+        "ReportVisibilityCriteria": {
+            "anyOf": [{
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "validPropertyTypes": {
+                            "type": "array",
+                            "items": {
+                                "type": "number"
+                            }
+                        },
+                        "validCountryCodes": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "audience": {
+                            "anyOf": [{
+                                    "$ref": "#/definitions/ReportAudience"
+                                }, {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/AudienceGroup"
+                                    }
+                                }
+                            ]
+                        },
+                        "mustHaveShoppingCenters": {
+                            "type": "boolean"
+                        },
+                        "isExclusive": {
+                            "type": "boolean"
+                        },
+                        "visibleOnPages": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/VisibilityPage"
+                            }
+                        },
+                        "visibleForNumEntities": {
+                            "type": "number"
+                        }
+                    }
+                }, {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "validPropertyTypesForCountryCodes": {
+                            "$ref": "#/definitions/ObjectMap%3Cnumber%5B%5D%3E"
+                        },
+                        "audience": {
+                            "anyOf": [{
+                                    "$ref": "#/definitions/ReportAudience"
+                                }, {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/AudienceGroup"
+                                    }
+                                }
+                            ]
+                        },
+                        "mustHaveShoppingCenters": {
+                            "type": "boolean"
+                        },
+                        "isExclusive": {
+                            "type": "boolean"
+                        },
+                        "visibleOnPages": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/VisibilityPage"
+                            }
+                        },
+                        "visibleForNumEntities": {
+                            "type": "number"
+                        }
+                    }
+                }
+            ]
+        },
+        "ReportAudience": {
+            "type": "object",
+            "properties": {
+                "audienceGroup": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/AudienceGroup"
+                    }
+                },
+                "contactIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    }
+                },
+                "locationIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    }
+                }
+            },
+            "additionalProperties": false
+        },
+        "AudienceGroup": {
+            "type": "string",
+            "enum": ["costar-employees"]
+        },
+        "VisibilityPage": {
+            "type": "string",
+            "enum": ["Map", "Detail"]
+        },
+        "ObjectMap<number[]>": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "array",
+                "items": {
+                    "type": "number"
+                }
+            }
+        }
+    }
+}
